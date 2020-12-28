@@ -17,7 +17,7 @@ This project currently supports:
 
 At this time, the Lambda code only applies stop actions to resources within the same region. 
 
-## Deplotment
+## Deployment
 
 Complete deployment instructions are not yet written, but high-level, you would install the Typescript CLI and use the `tsc` command to transpile the `./src/` Typescript source into runnable Javascript in the `./dist/` directory.
 
