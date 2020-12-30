@@ -50,3 +50,5 @@ node_modules
 .cdk.staging
 cdk.out
 
+# Build folder for our lambda
+**/dist/*
