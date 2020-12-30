@@ -25,7 +25,10 @@ export class AwsResourceStopperStack extends cdk.Stack {
             'ec2:StopInstances',
             'sagemaker:ListNotebookInstances',
             'sagemaker:ListTags',
-            'sagemaker:StopNotebookInstance'
+            'sagemaker:StopNotebookInstance',
+            'rds:DescribeDBClusters',
+            'rds:ListTagsForResource',
+            'rds:StopDBCluster'
           ]
         })
       ]

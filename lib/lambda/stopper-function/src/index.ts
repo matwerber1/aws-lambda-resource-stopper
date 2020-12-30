@@ -58,7 +58,8 @@ export const handler = async (event: any = {}): Promise<any> => {
         
     }
     catch(error) {
-        response = error;
+        console.log('Error: ', error);
+        throw new Error(error);
     }
     console.log(response);
     return response;
