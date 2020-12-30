@@ -39,3 +39,14 @@ dist/**/*
 
 # ignore yarn.lock
 yarn.lock
+
+# CDK / JS / TS ignore
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+

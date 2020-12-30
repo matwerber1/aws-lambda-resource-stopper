@@ -14,19 +14,23 @@ This project currently supports:
 
 * EC2 instances
 * SageMaker notebooks
+* Neptune clusters
 
 At this time, the Lambda code only applies stop actions to resources within the same region. 
 
 ## Deployment
 
-Complete deployment instructions are not yet written, but high-level, you would install the Typescript CLI and use the `tsc` command to transpile the `./src/` Typescript source into runnable Javascript in the `./dist/` directory.
+Complete deployment instructions are not yet written, but high-level, can follow the steps below:
 
+1. Transpile the Lambda Typescript to Javascript/NodeJS:
 
-Then, zip and upload all assets in the `./dist/` directory as a Lambda function and be sure to grant the Lambda with required permissions, which include but are not limited to: 
+    ```
+    cd lib/lambda/stopper-function
+    npm run build
+    ```
 
-* `ec2:DescribeInstances`
-* `ec2:DescribeTags`
-* `ec2:StopInstances`
-* `sagemaker:ListNotebookInstances`
-* `sagemaker:ListTags`
-* `sagemaker:StopNotebookInstance`
+2. Deploy the Lambda + CloudWatch Event via the AWS CDK. Be sure to run these commands from the root directory of this project:
+
+    ```
+    cdk deploy
+    ```
