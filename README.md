@@ -15,6 +15,7 @@ This project currently supports:
 * EC2 instances
 * SageMaker notebooks
 * Neptune clusters
+* Redshift clusters
 
 At this time, the Lambda code only applies stop actions to resources within the same region. 
 
