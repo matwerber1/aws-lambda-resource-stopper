@@ -11,7 +11,7 @@ export class Ec2Stopper extends ResourceStopper {
         this.client = new EC2.EC2(props.awsClientConfig || {});
     }
 
-    protected async listResourcesAPI(): Promise<void> {
+    protected async listResources(): Promise<void> {
         
         let reservations: EC2.Reservation[] = [];
         let response: EC2.DescribeInstancesResult;

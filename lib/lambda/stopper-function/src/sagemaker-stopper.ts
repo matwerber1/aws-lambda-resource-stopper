@@ -11,7 +11,7 @@ export class SageMakerStopper extends ResourceStopper {
         this.client = new SageMaker.SageMaker(props.awsClientConfig || {});
     }
 
-    protected async listResourcesAPI(): Promise<void> {
+    protected async listResources(): Promise<void> {
         
         let notebookInstances: SageMaker.NotebookInstanceSummary[] = [];
         let response: SageMaker.ListNotebookInstancesOutput;

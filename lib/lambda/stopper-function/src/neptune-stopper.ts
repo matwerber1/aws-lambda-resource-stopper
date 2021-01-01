@@ -11,7 +11,7 @@ export class NeptuneStopper extends ResourceStopper {
         this.client = new Neptune.Neptune(props.awsClientConfig || {});
     }
 
-    protected async listResourcesAPI(): Promise<void> {
+    protected async listResources(): Promise<void> {
         
         let clusters: Neptune.DBCluster[] = [];
         let response: Neptune.DescribeDBClustersCommandOutput;

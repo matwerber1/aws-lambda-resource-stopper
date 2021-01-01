@@ -28,7 +28,7 @@ export abstract class ResourceStopper {
         this.accountId = params.accountId;
     }
 
-    protected abstract listResourcesAPI(): Promise<void>;
+    protected abstract listResources(): Promise<void>;
     protected abstract resourceIsRunning(resource: any): boolean;    
     protected abstract getResourcesTaggedToKeepRunning(): Promise<void>;
     protected abstract stopResourcesAPI(): Promise<void>;
@@ -60,14 +60,17 @@ export abstract class ResourceStopper {
     
     }
 
-    private async listResources(): Promise<void> {
-        await this.listResourcesAPI();
-        console.log(`The following ${this.resourceType}s are running: ${JSON.stringify(this.resourceIds)}`);
-    }
-
     public async stopResources(): Promise<void> {
 
         await this.listResources();
+        
+        if (this.resourceIds.length > 0) {
+            console.log(`The following ${this.resourceType}s are running: ${JSON.stringify(this.resourceIds)}`);
+        }
+        else {
+            console.log(`No running ${this.resourceType}s, nothing left to do.`);
+            return;
+        }
         await this.getResourcesTaggedToKeepRunning();
         this.ignoreResourcesTaggedToKeepRunning();
         
