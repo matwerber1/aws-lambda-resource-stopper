@@ -4,6 +4,7 @@ import { ResourceStopper, ResourceStopperProps } from './resource-stopper';
 import { Ec2Stopper } from './ec2-stopper';
 import { SageMakerStopper } from './sagemaker-stopper';
 import { NeptuneStopper } from './neptune-stopper';
+import { RedshiftStopper } from './redshift-stopper';
 
 
 export const handler = async (event: any = {}): Promise<any> => {
@@ -19,7 +20,8 @@ export const handler = async (event: any = {}): Promise<any> => {
         let resourceTypesToStop:string[] = [
             'ec2',
             'sagemaker',
-            'neptune'
+            'neptune',
+            'redshift'
         ];
 
         for (const resourceTypeToStop of resourceTypesToStop) {
@@ -43,6 +45,9 @@ export const handler = async (event: any = {}): Promise<any> => {
                     break;
                 case 'neptune':
                     stopper = new NeptuneStopper(params);
+                    break;
+                case 'redshift':
+                    stopper = new RedshiftStopper(params);
                     break;
                 default: 
                     throw new Error(`Unsupported resource type: ${resourceTypeToStop}`);
