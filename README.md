@@ -1,14 +1,12 @@
 # AWS Lambda Resource Stopper
 
-This project contains the source code for an AWS Lambda function that will stop certain resource types (that you configure) if they are **not** tagged with a tag of `KeepRunning=true`. 
-
-The idea is you would set this Lambda up to run on a schedule, such as nightly at 12 AM, in personal or experimental AWS accounts to turn off your resources. 
+This project contains an AWS CDK project that deploys a Lambda function that is automatically invoked once per day at 1 AM. This function will stop any supported running resources if they are **not** tagged with `KeepRunning=true`.
 
 ## Warning
 
 Given the fact that this Lambda will indiscriminately stop resources, you of course should **not** run this in an account that has resources that you do not want to stop without thoroughly testing or modifying the code in a test account or region, and/or without first tagging your resources with `KeepRunning=true` (note - tags are case-sensitive).
 
-## Status
+## Supported resources
 
 This project currently supports: 
 
