@@ -29,7 +29,7 @@ export class Ec2Stopper extends ResourceStopper {
             let instances:EC2.Instance[] = reservation.Instances || [];
             
             for (const instance of instances) {
-                if (instance.InstanceId && this.resourceIsRunning(instance)) {
+                if (instance.InstanceId && this.resourceIsEligibleToStop(instance)) {
                     this.resourceIds.push(instance.InstanceId);
                 } 
             }
@@ -85,7 +85,7 @@ export class Ec2Stopper extends ResourceStopper {
 
     }
 
-    protected resourceIsRunning(resource:EC2.Instance): boolean {
+    protected resourceIsEligibleToStop(resource:EC2.Instance): boolean {
 
         if ('State' in resource) {
             return (resource.State?.Name === 'running')

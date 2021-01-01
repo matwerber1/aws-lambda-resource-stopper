@@ -26,7 +26,7 @@ export class SageMakerStopper extends ResourceStopper {
 
         for (const notebookInstance of notebookInstances) {
             
-            if (this.resourceIsRunning(notebookInstance)) {
+            if (this.resourceIsEligibleToStop(notebookInstance)) {
                 if (notebookInstance.NotebookInstanceName) {
                     this.resourceIds.push(notebookInstance.NotebookInstanceName);
                 }
@@ -67,7 +67,7 @@ export class SageMakerStopper extends ResourceStopper {
 
     }
 
-    protected resourceIsRunning(resource:SageMaker.NotebookInstanceSummary) {
+    protected resourceIsEligibleToStop(resource:SageMaker.NotebookInstanceSummary) {
 
         return (resource.NotebookInstanceStatus === 'InService');
    

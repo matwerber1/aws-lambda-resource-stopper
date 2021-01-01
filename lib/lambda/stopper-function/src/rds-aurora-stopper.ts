@@ -1,21 +1,21 @@
 import { ResourceStopper, ResourceStopperProps } from "./resource-stopper";
-import * as Neptune from "@aws-sdk/client-neptune";
+import * as RDS from "@aws-sdk/client-rds";
 
-export class NeptuneStopper extends ResourceStopper {
+export class RdsAuroraStopper extends ResourceStopper {
 
-    protected client: Neptune.Neptune;
-    protected readonly resourceType:string = "Neptune cluster";
+    protected client: RDS.RDS;
+    protected readonly resourceType:string = "RDS Aurora cluster";
 
     constructor(props:ResourceStopperProps) {
         super(props);
-        this.client = new Neptune.Neptune(props.awsClientConfig || {});
+        this.client = new RDS.RDS(props.awsClientConfig || {});
     }
 
     protected async listResources(): Promise<void> {
         
-        let clusters: Neptune.DBCluster[] = [];
-        let response: Neptune.DescribeDBClustersCommandOutput;
-        let params: Neptune.DescribeDBClustersCommandInput = {};
+        let clusters: RDS.DBCluster[] = [];
+        let response: RDS.DescribeDBClustersCommandOutput;
+        let params: RDS.DescribeDBClustersCommandInput = {};
         
         do {
             response = await this.client.describeDBClusters(params);
@@ -42,14 +42,14 @@ export class NeptuneStopper extends ResourceStopper {
         for (const clusterId of this.resourceIds) {
             let clusterArn = `arn:aws:rds:${region}:${this.accountId}:cluster:${clusterId}`;
 
-            let params:Neptune.ListTagsForResourceCommandInput = {
+            let params:RDS.ListTagsForResourceCommandInput = {
                 ResourceName: clusterArn
             };
       
-            let tagResponse:Neptune.ListTagsForResourceCommandOutput = await this.client.listTagsForResource(params);
-            let tags:Neptune.Tag[] = tagResponse.TagList || [];
+            let tagResponse:RDS.ListTagsForResourceCommandOutput = await this.client.listTagsForResource(params);
+            let tags:RDS.Tag[] = tagResponse.TagList || [];
                 
-            let tag:Neptune.Tag;
+            let tag:RDS.Tag;
             for (tag of tags) {
                 if (tag.Key === this.keepRunningTag.key && tag.Value === this.keepRunningTag.value) {
                     this.resourceIdsTaggedToKeepRunning.push(clusterId);
@@ -59,7 +59,7 @@ export class NeptuneStopper extends ResourceStopper {
 
     }
 
-    protected resourceIsEligibleToStop(resource:Neptune.DBCluster) {
+    protected resourceIsEligibleToStop(resource:RDS.DBCluster) {
 
         return (resource.Status === 'available');
    
@@ -70,7 +70,7 @@ export class NeptuneStopper extends ResourceStopper {
         let clusterId: string;
 
         for (clusterId of this.resourceIds) {
-            let params: Neptune.StopDBClusterCommandInput = {
+            let params: RDS.StopDBClusterCommandInput = {
                 DBClusterIdentifier: clusterId
             };
             await this.client.stopDBCluster(params);

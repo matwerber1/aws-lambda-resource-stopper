@@ -5,6 +5,8 @@ import { Ec2Stopper } from './ec2-stopper';
 import { SageMakerStopper } from './sagemaker-stopper';
 import { NeptuneStopper } from './neptune-stopper';
 import { RedshiftStopper } from './redshift-stopper';
+import { RdsAuroraStopper } from './rds-aurora-stopper';
+import { RdsStopper } from './rds-stopper';
 
 
 export const handler = async (event: any = {}): Promise<any> => {
@@ -18,10 +20,12 @@ export const handler = async (event: any = {}): Promise<any> => {
         let accountId = await getAccountId(awsClientConfig);
         
         let resourceTypesToStop:string[] = [
-            'ec2',
-            'sagemaker',
-            'neptune',
-            'redshift'
+            //'ec2',
+            //'sagemaker',
+            //'neptune',
+            //'redshift',
+            //'rds-aurora',
+            'rds'
         ];
 
         for (const resourceTypeToStop of resourceTypesToStop) {
@@ -48,6 +52,12 @@ export const handler = async (event: any = {}): Promise<any> => {
                     break;
                 case 'redshift':
                     stopper = new RedshiftStopper(params);
+                    break;
+                case 'rds-aurora':
+                    stopper = new RdsAuroraStopper(params);
+                    break;
+                case 'rds':
+                    stopper = new RdsStopper(params);
                     break;
                 default: 
                     throw new Error(`Unsupported resource type: ${resourceTypeToStop}`);

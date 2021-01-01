@@ -29,7 +29,7 @@ export abstract class ResourceStopper {
     }
 
     protected abstract listResources(): Promise<void>;
-    protected abstract resourceIsRunning(resource: any): boolean;    
+    protected abstract resourceIsEligibleToStop(resource: any): boolean;    
     protected abstract getResourcesTaggedToKeepRunning(): Promise<void>;
     protected abstract stopResourcesAPI(): Promise<void>;
 
@@ -39,14 +39,15 @@ export abstract class ResourceStopper {
 
         // Remove any resource from our list of resources to stop if it is tagged with KeepRunning = true;
         let keepRunningCount = 0;
-        
+        let keepRunningResourceIds:string[] = [];
+
         this.resourceIds = this.resourceIds.filter(resourceId => {
         
             let resourceIsTaggedToKeepRunning:boolean = this.resourceIdsTaggedToKeepRunning.indexOf(resourceId) >= 0;
             
             if (resourceIsTaggedToKeepRunning) {
-                console.log(`${this.resourceType} ${resourceId} is tagged with ${this.keepRunningTag.key}=${this.keepRunningTag.value} and will not be stopped.`);
                 keepRunningCount += 1;
+                keepRunningResourceIds.push(resourceId)
             }
         
             // Only return resources *not* tagged to keep running:
@@ -56,6 +57,8 @@ export abstract class ResourceStopper {
 
         if (keepRunningCount === 0) {
             console.log('No instances tagged to keep running. All running resources will be stopped.');
+        } else {
+            console.log(`The following ${this.resourceType}(s) are tagged with ${this.keepRunningTag.key}=${this.keepRunningTag.value} and will not be stopped:\n${JSON.stringify(keepRunningResourceIds,null,2)}`);
         }
     
     }
@@ -65,17 +68,17 @@ export abstract class ResourceStopper {
         await this.listResources();
         
         if (this.resourceIds.length > 0) {
-            console.log(`The following ${this.resourceType}s are running: ${JSON.stringify(this.resourceIds)}`);
+            console.log(`The following ${this.resourceType}s are running and eligible to stop:\n${JSON.stringify(this.resourceIds, null, 2)}`);
         }
         else {
-            console.log(`No running ${this.resourceType}s, nothing left to do.`);
+            console.log(`No ${this.resourceType}s eligible for stopping, nothing left to do.`);
             return;
         }
         await this.getResourcesTaggedToKeepRunning();
         this.ignoreResourcesTaggedToKeepRunning();
         
         if (this.resourceIds.length > 0) {
-            console.log(`Stopping the following ${this.resourceType} resources: ${JSON.stringify(this.resourceIds)}`);
+            console.log(`Stopping the following ${this.resourceType} resources:\n${JSON.stringify(this.resourceIds, null,2)}`);
             if (this.dryRun) {
                 console.log('---> You specified dryRun=true in function call. Skipping actual stop.');
             }

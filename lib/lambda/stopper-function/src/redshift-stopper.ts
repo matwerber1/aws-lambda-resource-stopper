@@ -26,7 +26,7 @@ export class RedshiftStopper extends ResourceStopper {
 
         for (const cluster of clusters) {
             
-            if (this.resourceIsRunning(cluster)) {
+            if (this.resourceIsEligibleToStop(cluster)) {
                 if (cluster.ClusterIdentifier) {
                     this.resourceIds.push(cluster.ClusterIdentifier);
                 }
@@ -65,7 +65,7 @@ export class RedshiftStopper extends ResourceStopper {
 
     }
 
-    protected resourceIsRunning(resource:Redshift.Cluster): boolean {
+    protected resourceIsEligibleToStop(resource:Redshift.Cluster): boolean {
 
         if ('ClusterStatus' in resource) {
             return (resource.ClusterStatus === 'running')
