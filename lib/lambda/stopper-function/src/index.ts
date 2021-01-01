@@ -20,11 +20,11 @@ export const handler = async (event: any = {}): Promise<any> => {
         let accountId = await getAccountId(awsClientConfig);
         
         let resourceTypesToStop:string[] = [
-            //'ec2',
-            //'sagemaker',
-            //'neptune',
-            //'redshift',
-            //'rds-aurora',
+            'ec2',
+            'sagemaker',
+            'neptune',
+            'redshift',
+            'rds-aurora',
             'rds'
         ];
 
