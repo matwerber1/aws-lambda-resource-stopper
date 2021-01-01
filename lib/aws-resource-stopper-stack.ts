@@ -28,7 +28,12 @@ export class AwsResourceStopperStack extends cdk.Stack {
             'sagemaker:StopNotebookInstance',
             'rds:DescribeDBClusters',
             'rds:ListTagsForResource',
-            'rds:StopDBCluster'
+            'rds:StopDBCluster',
+            'rds:DescribeDBInstances',
+            'rds:StopDBInstance',
+            'redshift:DescribeClusters',
+            'redshift:DescribeTags',
+            'redshift:PauseCluster',
           ]
         })
       ]
