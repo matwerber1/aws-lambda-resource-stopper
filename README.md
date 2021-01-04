@@ -14,6 +14,7 @@ This project currently supports:
 * SageMaker notebooks
 * Neptune clusters
 * Redshift clusters
+    * Note - [Redshift has out-of-the-box support for scheduling the pause and resume of a cluster](https://aws.amazon.com/blogs/big-data/lower-your-costs-with-the-new-pause-and-resume-actions-on-amazon-redshift/), so you might consider that over the functionality provided by this project.  
 * RDS Aurora clusters
 * RDS Databases (see **RDS Support**)
     
