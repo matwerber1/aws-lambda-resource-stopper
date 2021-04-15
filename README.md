@@ -27,9 +27,7 @@ RDS can be a bit tricky depending on database engine and configuration.
 
 There are a few known gaps in my RDS stopper implementation, and possibly others I haven't identified:
 
-* Aurora instance-based databases are supported
-
-* Aurora Serverless is not applicable... and I haven't added code to ignore Aurora Serverless... so an error would probably be thrown when the stop command is issues. This needs to be fixed.
+* Aurora Serverless is not supported for stopping... and I haven't added code to ignore Aurora Serverless... so an error would probably be thrown when the stop command is issues. This needs to be fixed.
 
 * Microsoft SQL Server cannot be stopped if it is multi-AZ. I have not added logic to ignore such databases, so an error would probably be thrown. 
 
